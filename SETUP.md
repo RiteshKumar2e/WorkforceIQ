@@ -71,9 +71,6 @@ npm run seed
 
 Go to http://localhost:3000/login
 
-Use demo credentials:
-- Email: `manager1@munger.com`
-- Password: `password123`
 
 ---
 
@@ -347,8 +344,8 @@ Body (JSON):
 POST http://localhost:5000/api/auth/login
 Body (JSON):
 {
-  "email": "manager1@munger.com",
-  "password": "password123"
+  "email": "user@example.com",
+  "password": "your_password"
 }
 Response: { token, user }
 ```

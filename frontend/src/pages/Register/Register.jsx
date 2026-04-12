@@ -1,10 +1,10 @@
 import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { useAuth } from '../../hooks/useAuth'
-import { validateEmail, validatePassword, validatePasswordStrength, validateRequired } from '../../utils/validators'
+import { validateEmail, validatePassword } from '../../utils/validators'
+import { ROLES } from '../../utils/constants'
 import Input from '../../components/common/Input/Input'
 import Button from '../../components/common/Button/Button'
-import { ROLES } from '../../utils/constants'
 import './Register.css'
 
 const Register = () => {
@@ -14,46 +14,76 @@ const Register = () => {
     password: '',
     confirmPassword: '',
     role: ROLES.SHIFT_MANAGER,
-    employeeId: '',
+    employeeId: ''
   })
   const [errors, setErrors] = useState({})
+  const [passwordStrength, setPasswordStrength] = useState(0)
   const [loading, setLoading] = useState(false)
   const [apiError, setApiError] = useState('')
-  const [passwordStrength, setPasswordStrength] = useState(0)
+  const [showPassword, setShowPassword] = useState(false)
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [tosAgree, setTosAgree] = useState(false)
   const { register } = useAuth()
   const navigate = useNavigate()
 
-  const handleChange = (e) => {
-    const { name, value } = e.target
-    setFormData(prev => ({ ...prev, [name]: value }))
-    
-    if (name === 'password') {
-      const strength = validatePasswordStrength(value)
-      setPasswordStrength(strength)
-    }
+  const calculatePasswordStrength = (pwd) => {
+    if (!pwd) return 0
+    let strength = 0
+    if (pwd.length >= 6) strength++
+    if (pwd.length >= 8) strength++
+    if (pwd.length >= 12) strength++
+    if (/[a-z]/.test(pwd) && /[A-Z]/.test(pwd)) strength++
+    if (/\d/.test(pwd)) strength++
+    if (/[!@#$%^&*()_+\-=[\]{};':"\\|,.<>?/]/.test(pwd)) strength++
+    return Math.min(Math.ceil((strength / 6) * 4), 4)
+  }
 
-    if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }))
-    }
+  const handlePasswordChange = (e) => {
+    const pwd = e.target.value
+    setFormData({ ...formData, password: pwd })
+    setPasswordStrength(calculatePasswordStrength(pwd))
+    if (errors.password) setErrors({ ...errors, password: '' })
+  }
+
+  const getPasswordStrengthLabel = () => {
+    const labels = ['Weak', 'Fair', 'Good', 'Strong', 'Very Strong']
+    return labels[Math.max(0, passwordStrength - 1)] || 'Weak'
+  }
+
+  const getPasswordStrengthColor = () => {
+    const colors = ['#ef4444', '#f97316', '#eab308', '#22c55e', '#16a34a']
+    return colors[Math.max(0, passwordStrength - 1)] || '#ef4444'
   }
 
   const validateForm = () => {
     const newErrors = {}
 
-    if (!validateRequired(formData.name)) {
+    if (!formData.name.trim()) {
       newErrors.name = 'Full name is required'
+    } else if (formData.name.trim().length < 2) {
+      newErrors.name = 'Name must be at least 2 characters'
     }
-    if (!validateEmail(formData.email)) {
-      newErrors.email = 'Valid email is required'
+
+    if (!formData.email.trim()) {
+      newErrors.email = 'Email is required'
+    } else if (!validateEmail(formData.email)) {
+      newErrors.email = 'Please enter a valid email address'
     }
-    if (!validatePassword(formData.password)) {
-      newErrors.password = 'Password must be at least 6 characters'
+
+    if (!formData.password) {
+      newErrors.password = 'Password is required'
+    } else if (passwordStrength < 2) {
+      newErrors.password = 'Password is too weak. Use uppercase, lowercase, and numbers'
     }
-    if (formData.password !== formData.confirmPassword) {
+
+    if (!formData.confirmPassword) {
+      newErrors.confirmPassword = 'Please confirm your password'
+    } else if (formData.password !== formData.confirmPassword) {
       newErrors.confirmPassword = 'Passwords do not match'
     }
-    if (!validateRequired(formData.role)) {
-      newErrors.role = 'Role is required'
+
+    if (!tosAgree) {
+      newErrors.tos = 'You must agree to the terms and conditions'
     }
 
     setErrors(newErrors)
@@ -75,7 +105,7 @@ const Register = () => {
         email: formData.email,
         password: formData.password,
         role: formData.role,
-        employeeId: formData.employeeId,
+        employeeId: formData.employeeId || undefined
       })
       navigate('/dashboard')
     } catch (error) {
@@ -85,143 +115,247 @@ const Register = () => {
     }
   }
 
-  const getPasswordStrengthColor = (strength) => {
-    if (strength <= 1) return '#ef4444'
-    if (strength === 2) return '#f59e0b'
-    if (strength >= 3) return '#22c55e'
+  const handleInputChange = (e) => {
+    const { name, value } = e.target
+    setFormData({ ...formData, [name]: value })
+    if (errors[name]) {
+      setErrors({ ...errors, [name]: '' })
+    }
   }
+
+  const roleOptions = [
+    { value: ROLES.SHIFT_MANAGER, label: 'Shift Manager', icon: '👷' },
+    { value: ROLES.LINE_MANAGER, label: 'Line Manager', icon: '👔' },
+    { value: ROLES.HR_ADMIN, label: 'HR Admin', icon: '👨‍💼' }
+  ]
 
   return (
     <div className="register-layout">
-      <div className="register-header">
-        <h1>WorkforceIQ</h1>
-        <p>Create Your Account</p>
-      </div>
-
       <div className="register-container">
-        <div className="register-card">
-          <h2>Get Started</h2>
-          <p className="register-subtitle">Join WorkforceIQ today</p>
-
-          {apiError && (
-            <div className="alert alert-error">
-              {apiError}
+        {/* Left Side - Features */}
+        <div className="register-features">
+          <div className="features-content">
+            <div className="features-icon">✨</div>
+            <h1>Join WorkforceIQ</h1>
+            <p className="features-subtitle">Create your account in seconds</p>
+            <div className="benefits-list">
+              <div className="benefit-item">
+                <span className="benefit-check">✓</span>
+                <div>
+                  <div className="benefit-title">Real-time Analytics</div>
+                  <div className="benefit-desc">Get insights as they happen</div>
+                </div>
+              </div>
+              <div className="benefit-item">
+                <span className="benefit-check">✓</span>
+                <div>
+                  <div className="benefit-title">Team Management</div>
+                  <div className="benefit-desc">Manage teams efficiently</div>
+                </div>
+              </div>
+              <div className="benefit-item">
+                <span className="benefit-check">✓</span>
+                <div>
+                  <div className="benefit-title">Skill Tracking</div>
+                  <div className="benefit-desc">Monitor employee development</div>
+                </div>
+              </div>
+              <div className="benefit-item">
+                <span className="benefit-check">✓</span>
+                <div>
+                  <div className="benefit-title">Data Security</div>
+                  <div className="benefit-desc">Enterprise-grade protection</div>
+                </div>
+              </div>
             </div>
-          )}
+          </div>
+        </div>
 
-          <form onSubmit={handleSubmit} className="register-form">
-            <Input
-              label="Full Name"
-              placeholder="John Doe"
-              name="name"
-              value={formData.name}
-              onChange={handleChange}
-              error={errors.name}
-              required
-            />
+        {/* Right Side - Register Form */}
+        <div className="register-form-container">
+          <div className="register-card">
+            <div className="register-header-section">
+              <h2>Create Account</h2>
+              <p className="register-subtitle">Sign up to get started</p>
+            </div>
 
-            <Input
-              label="Email"
-              type="email"
-              placeholder="you@example.com"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              error={errors.email}
-              required
-            />
+            {apiError && (
+              <div className="alert alert-error">
+                <span className="alert-icon">⚠️</span>
+                <span>{apiError}</span>
+              </div>
+            )}
 
-            <div className="form-group">
-              <label className="required">Password</label>
-              <input
-                type="password"
-                className={`input ${errors.password ? 'input-error' : ''}`}
-                placeholder="Enter your password"
-                name="password"
-                value={formData.password}
-                onChange={handleChange}
-                required
-              />
-              {formData.password && (
-                <div className="password-strength">
-                  <div className="strength-bars">
-                    {[0, 1, 2, 3].map((i) => (
+            <form onSubmit={handleSubmit} className="register-form">
+              {/* Full Name */}
+              <div className="form-group">
+                <label htmlFor="name" className="form-label">Full Name</label>
+                <Input
+                  id="name"
+                  type="text"
+                  name="name"
+                  placeholder="John Doe"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  error={errors.name}
+                />
+              </div>
+
+              {/* Email */}
+              <div className="form-group">
+                <label htmlFor="email" className="form-label">Email Address</label>
+                <Input
+                  id="email"
+                  type="email"
+                  name="email"
+                  placeholder="you@example.com"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  error={errors.email}
+                />
+              </div>
+
+              {/* Employee ID */}
+              <div className="form-group">
+                <label htmlFor="employeeId" className="form-label">Employee ID <span className="optional">(Optional)</span></label>
+                <Input
+                  id="employeeId"
+                  type="text"
+                  name="employeeId"
+                  placeholder="EMP-12345"
+                  value={formData.employeeId}
+                  onChange={handleInputChange}
+                />
+              </div>
+
+              {/* Role Selection */}
+              <div className="form-group">
+                <label htmlFor="role" className="form-label">Your Role</label>
+                <div className="role-selection">
+                  {roleOptions.map((option) => (
+                    <label key={option.value} className={`role-option ${formData.role === option.value ? 'selected' : ''}`}>
+                      <input
+                        type="radio"
+                        name="role"
+                        value={option.value}
+                        checked={formData.role === option.value}
+                        onChange={handleInputChange}
+                      />
+                      <span className="role-icon">{option.icon}</span>
+                      <span className="role-label">{option.label}</span>
+                    </label>
+                  ))}
+                </div>
+              </div>
+
+              {/* Password */}
+              <div className="form-group">
+                <label htmlFor="password" className="form-label">Password</label>
+                <div className="password-input-wrapper">
+                  <Input
+                    id="password"
+                    type={showPassword ? 'text' : 'password'}
+                    name="password"
+                    placeholder="Create a strong password"
+                    value={formData.password}
+                    onChange={handlePasswordChange}
+                    error={errors.password}
+                  />
+                  <button
+                    type="button"
+                    className="password-toggle"
+                    onClick={() => setShowPassword(!showPassword)}
+                    aria-label="Toggle password visibility"
+                  >
+                    {showPassword ? '👁️' : '🙈'}
+                  </button>
+                </div>
+                {formData.password && (
+                  <div className="password-strength">
+                    <div className="strength-bar">
                       <div
-                        key={i}
-                        className="strength-bar"
+                        className="strength-fill"
                         style={{
-                          backgroundColor: i < passwordStrength ? getPasswordStrengthColor(passwordStrength) : '#e2e8f0',
+                          width: `${(passwordStrength / 4) * 100}%`,
+                          backgroundColor: getPasswordStrengthColor()
                         }}
                       />
-                    ))}
+                    </div>
+                    <span className="strength-text" style={{ color: getPasswordStrengthColor() }}>
+                      {getPasswordStrengthLabel()} password
+                    </span>
                   </div>
-                  <span className="strength-label" style={{ color: getPasswordStrengthColor(passwordStrength) }}>
-                    {passwordStrength === 0 && 'Very Weak'}
-                    {passwordStrength === 1 && 'Weak'}
-                    {passwordStrength === 2 && 'Fair'}
-                    {passwordStrength === 3 && 'Good'}
-                    {passwordStrength === 4 && 'Strong'}
-                  </span>
+                )}
+              </div>
+
+              {/* Confirm Password */}
+              <div className="form-group">
+                <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
+                <div className="password-input-wrapper">
+                  <Input
+                    id="confirmPassword"
+                    type={showConfirmPassword ? 'text' : 'password'}
+                    name="confirmPassword"
+                    placeholder="Re-enter your password"
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange}
+                    error={errors.confirmPassword}
+                  />
+                  <button
+                    type="button"
+                    className="password-toggle"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    aria-label="Toggle confirm password visibility"
+                  >
+                    {showConfirmPassword ? '👁️' : '🙈'}
+                  </button>
                 </div>
-              )}
-              {errors.password && <span className="form-error">{errors.password}</span>}
-            </div>
+              </div>
 
-            <Input
-              label="Confirm Password"
-              type="password"
-              placeholder="Confirm your password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              error={errors.confirmPassword}
-              required
-            />
+              {/* Terms & Conditions */}
+              <div className="form-checkbox">
+                <input
+                  type="checkbox"
+                  id="tos"
+                  checked={tosAgree}
+                  onChange={(e) => {
+                    setTosAgree(e.target.checked)
+                    if (errors.tos) setErrors({ ...errors, tos: '' })
+                  }}
+                />
+                <label htmlFor="tos">
+                  I agree to the <a href="#tos">Terms of Service</a> and <a href="#privacy">Privacy Policy</a>
+                </label>
+              </div>
+              {errors.tos && <span className="error-text">{errors.tos}</span>}
 
-            <div className="form-group">
-              <label className="required">Role</label>
-              <select
-                name="role"
-                className={`input ${errors.role ? 'input-error' : ''}`}
-                value={formData.role}
-                onChange={handleChange}
+              {/* Submit Button */}
+              <Button
+                type="submit"
+                variant="primary"
+                size="lg"
+                fullWidth
+                disabled={loading}
+                className="register-button"
               >
-                <option value={ROLES.SHIFT_MANAGER}>Shift Manager</option>
-                <option value={ROLES.LINE_MANAGER}>Line Manager</option>
-                <option value={ROLES.HR_ADMIN}>HR Administrator</option>
-              </select>
-              {errors.role && <span className="form-error">{errors.role}</span>}
+                {loading ? (
+                  <>
+                    <span className="spinner"></span>
+                    Creating account...
+                  </>
+                ) : (
+                  'Create Account'
+                )}
+              </Button>
+            </form>
+
+            {/* Login Link */}
+            <div className="register-footer">
+              <p>
+                Already have an account?
+                <Link to="/login" className="login-link">Sign in</Link>
+              </p>
             </div>
-
-            <Input
-              label="Employee ID (Optional)"
-              placeholder="EMP123456"
-              name="employeeId"
-              value={formData.employeeId}
-              onChange={handleChange}
-            />
-
-            <Button
-              type="submit"
-              variant="primary"
-              size="lg"
-              fullWidth
-              disabled={loading}
-            >
-              {loading ? 'Creating Account...' : 'Create Account'}
-            </Button>
-          </form>
-
-          <div className="register-footer">
-            <p>
-              Already have an account?{' '}
-              <Link to="/login">Sign in</Link>
-            </p>
-            <p className="terms">
-              By signing up, you agree to our{' '}
-              <a href="#terms">Terms of Service</a> and{' '}
-              <a href="#privacy">Privacy Policy</a>
-            </p>
           </div>
         </div>
       </div>

@@ -87,22 +87,6 @@ npm run seed
 
 This will populate the database with sample users and employees.
 
-## 📊 Demo Credentials
-
-After seeding, use these credentials to test the application:
-
-**Shift Manager:**
-- Email: `manager1@munger.com`
-- Password: `password123`
-
-**Line Manager:**
-- Email: `manager2@munger.com`
-- Password: `password123`
-
-**HR Admin:**
-- Email: `hr@munger.com`
-- Password: `password123`
-
 ## 🏗️ Project Structure
 
 ```

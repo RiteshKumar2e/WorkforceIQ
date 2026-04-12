@@ -1,145 +1,434 @@
 .register-layout {
   min-height: 100vh;
-  background: linear-gradient(135deg, #eff6ff 0%, #f1f5f9 100%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+}
+
+.register-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  max-width: 1100px;
+  width: 100%;
+  background: white;
+  border-radius: 1.5rem;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Features Section */
+.register-features {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 1rem;
+  padding: 3rem 2rem;
+  color: white;
 }
 
-.register-header {
+.features-content {
   text-align: center;
-  margin-bottom: 2rem;
 }
 
-.register-header h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  color: #3b82f6;
+.features-icon {
+  font-size: 3.5rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.register-features h1 {
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin: 0 0 0.5rem 0;
+  letter-spacing: -0.5px;
+}
+
+.features-subtitle {
+  font-size: 0.95rem;
+  opacity: 0.9;
+  margin: 0 0 2rem 0;
+}
+
+/* Benefits List */
+.benefits-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  text-align: left;
+}
+
+.benefit-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.benefit-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  font-size: 1rem;
+  font-weight: bold;
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+}
+
+.benefit-title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin: 0 0 0.25rem 0;
+}
+
+.benefit-desc {
+  font-size: 0.85rem;
+  opacity: 0.9;
   margin: 0;
 }
 
-.register-header p {
-  font-size: 0.875rem;
-  color: #64748b;
-  margin: 0.5rem 0 0 0;
-}
-
-.register-container {
+/* Form Section */
+.register-form-container {
   display: flex;
+  flex-direction: column;
   justify-content: center;
-  width: 100%;
+  padding: 3rem 2.5rem;
 }
 
 .register-card {
-  background-color: white;
-  border-radius: 1rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-  padding: 2.5rem;
-  max-width: 450px;
   width: 100%;
 }
 
+.register-header-section {
+  margin-bottom: 2rem;
+}
+
 .register-card h2 {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   font-weight: 700;
   color: #1e293b;
   margin: 0 0 0.5rem 0;
 }
 
 .register-subtitle {
+  font-size: 0.95rem;
   color: #64748b;
-  font-size: 0.875rem;
-  margin: 0 0 1.5rem 0;
+  margin: 0;
 }
 
+/* Alert Styles */
 .alert {
   padding: 1rem;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   margin-bottom: 1.5rem;
-  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .alert-error {
-  background-color: #fee2e2;
-  border: 1px solid #fecaca;
+  background: #fee2e2;
   color: #991b1b;
+  border-left: 4px solid #ef4444;
 }
 
+.alert-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+/* Form Styles */
 .register-form {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  margin-bottom: 1.5rem;
 }
 
-.password-strength {
-  margin-top: 0.5rem;
+.form-group {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.optional {
+  color: #94a3b8;
+  font-weight: 400;
+  font-size: 0.75rem;
+}
+
+/* Role Selection */
+.role-selection {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   gap: 0.75rem;
 }
 
-.strength-bars {
+.role-option {
+  position: relative;
+  cursor: pointer;
+}
+
+.role-option input[type='radio'] {
+  display: none;
+}
+
+.role-option {
   display: flex;
-  gap: 0.25rem;
-  flex: 1;
+  flex-direction: column;
+  align-items: center;
+  padding: 1rem;
+  border: 2px solid #e2e8f0;
+  border-radius: 0.75rem;
+  background: #f8fafc;
+  transition: all 0.2s ease;
+  gap: 0.5rem;
+}
+
+.role-option:hover {
+  border-color: #cbd5e1;
+  background: #f1f5f9;
+}
+
+.role-option.selected {
+  border-color: #667eea;
+  background: #ede9fe;
+}
+
+.role-icon {
+  font-size: 1.5rem;
+  display: block;
+}
+
+.role-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #1e293b;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.role-option.selected .role-label {
+  color: #667eea;
+}
+
+/* Password Input Wrapper */
+.password-input-wrapper {
+  position: relative;
+}
+
+.password-toggle {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.2s ease;
+}
+
+.password-toggle:hover {
+  opacity: 0.7;
+}
+
+/* Password Strength */
+.password-strength {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
 }
 
 .strength-bar {
+  width: 100%;
   height: 4px;
+  background: #e2e8f0;
   border-radius: 2px;
-  flex: 1;
-  transition: background-color 0.2s;
+  overflow: hidden;
 }
 
-.strength-label {
+.strength-fill {
+  height: 100%;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.strength-text {
   font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  min-width: 50px;
-  text-align: right;
+  font-weight: 500;
 }
 
-.register-footer {
-  text-align: center;
+/* Form Checkbox */
+.form-checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
   font-size: 0.875rem;
+  line-height: 1.4;
 }
 
-.register-footer p {
+.form-checkbox input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  accent-color: #667eea;
+  flex-shrink: 0;
+  margin-top: 0.2rem;
+}
+
+.form-checkbox label {
+  cursor: pointer;
   color: #64748b;
-  margin: 0.75rem 0;
 }
 
-.register-footer a {
-  color: #3b82f6;
+.form-checkbox a {
+  color: #667eea;
   text-decoration: none;
   font-weight: 600;
-  transition: color 0.2s;
 }
 
-.register-footer a:hover {
-  color: #2563eb;
-}
-
-.terms {
-  font-size: 0.75rem;
-  color: #94a3b8;
-  margin: 1rem 0 0 0;
-}
-
-.terms a {
-  color: #3b82f6;
+.form-checkbox a:hover {
   text-decoration: underline;
 }
 
-@media (max-width: 640px) {
-  .register-card {
+/* Error Text */
+.error-text {
+  font-size: 0.8rem;
+  color: #ef4444;
+  margin-top: -1rem;
+  margin-bottom: 0.5rem;
+}
+
+/* Register Button */
+.register-button {
+  margin-top: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+
+.register-button .spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-right: 0.5rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Register Footer */
+.register-footer {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.register-footer p {
+  margin: 0;
+}
+
+.login-link {
+  margin-left: 0.25rem;
+  color: #667eea;
+  text-decoration: none;
+  font-weight: 600;
+}
+
+.login-link:hover {
+  text-decoration: underline;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .register-container {
+    grid-template-columns: 1fr;
+  }
+
+  .register-features {
+    display: none;
+  }
+
+  .register-form-container {
     padding: 2rem 1.5rem;
   }
 
-  .register-header h1 {
+  .role-selection {
+    grid-template-columns: 1fr;
+  }
+
+  .register-features h1 {
+    font-size: 2rem;
+  }
+
+  .benefit-item {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 480px) {
+  .register-form-container {
+    padding: 1.5rem 1rem;
+  }
+
+  .register-card h2 {
     font-size: 1.5rem;
+  }
+
+  .form-label {
+    font-size: 0.8rem;
+  }
+
+  .form-checkbox {
+    font-size: 0.75rem;
   }
 }
