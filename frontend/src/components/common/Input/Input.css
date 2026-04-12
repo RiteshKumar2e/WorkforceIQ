@@ -1,7 +1,7 @@
 .input {
   width: 100%;
   padding: 0.875rem 1.25rem;
-  border: 2px solid var(--color-border-default);
+  border: 2px solid var(--border-color);
   border-radius: 1.25rem;
   font-size: 1rem;
   background-color: white;
