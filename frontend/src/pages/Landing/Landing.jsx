@@ -9,7 +9,7 @@ const Landing = () => {
       {/* Navigation */}
       <nav className="landing-nav">
         <div className="landing-nav-container">
-          <div className="landing-logo">WorkforceIQ</div>
+          <div className="landing-logo">Workforce<span>IQ</span></div>
           <div className="landing-nav-links">
             <Link to="/login">Login</Link>
             <Link to="/register">Register</Link>
@@ -20,12 +20,12 @@ const Landing = () => {
       {/* Hero Section */}
       <section className="hero-section">
         <div className="hero-content">
-          <h1 className="hero-title">People Intelligence Platform</h1>
+          <h1 className="hero-title">People <span>Intelligence</span> Platform</h1>
           <p className="hero-subtitle">
-            Make evidence-based decisions on employee performance, training, team balance, and promotion readiness
+            Make evidence-based decisions with workforce analytics
           </p>
           <p className="hero-description">
-            WorkforceIQ replaces paper files and memory-based decisions with intelligent insights for modern workforce management.
+            WorkforceIQ replaces paper files and memory-based decisions with intelligent, data-driven insights for modern performance management.
           </p>
           <div className="hero-cta">
             <Link to="/login">
