@@ -7,6 +7,52 @@ import Input from '../../components/common/Input/Input'
 import Button from '../../components/common/Button/Button'
 import './Register.css'
 
+const EyeIcon = ({ show }) => (
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    {show ? (
+      <>
+        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+        <line x1="1" y1="1" x2="23" y2="23"></line>
+      </>
+    ) : (
+      <>
+        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+        <circle cx="12" cy="12" r="3"></circle>
+      </>
+    )}
+  </svg>
+)
+
+const CheckIcon = () => (
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
+    <polyline points="20 6 9 17 4 12"></polyline>
+  </svg>
+)
+
+const ShifterIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+    <circle cx="9" cy="7" r="4"></circle>
+    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+  </svg>
+)
+
+const LineIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+    <circle cx="9" cy="7" r="4"></circle>
+    <polyline points="16 11 18 13 22 9"></polyline>
+  </svg>
+)
+
+const AdminIcon = () => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+    <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+  </svg>
+)
+
 const Register = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -73,7 +119,7 @@ const Register = () => {
     if (!formData.password) {
       newErrors.password = 'Password is required'
     } else if (passwordStrength < 2) {
-      newErrors.password = 'Password is too weak. Use uppercase, lowercase, and numbers'
+      newErrors.password = 'Password is too weak'
     }
 
     if (!formData.confirmPassword) {
@@ -83,7 +129,7 @@ const Register = () => {
     }
 
     if (!tosAgree) {
-      newErrors.tos = 'You must agree to the terms and conditions'
+      newErrors.tos = 'Required'
     }
 
     setErrors(newErrors)
@@ -109,7 +155,7 @@ const Register = () => {
       })
       navigate('/dashboard')
     } catch (error) {
-      setApiError(error.response?.data?.message || 'Registration failed. Please try again.')
+      setApiError(error.response?.data?.message || 'Registration failed')
     } finally {
       setLoading(false)
     }
@@ -124,9 +170,9 @@ const Register = () => {
   }
 
   const roleOptions = [
-    { value: ROLES.SHIFT_MANAGER, label: 'Shift Manager', icon: '👷' },
-    { value: ROLES.LINE_MANAGER, label: 'Line Manager', icon: '👔' },
-    { value: ROLES.HR_ADMIN, label: 'HR Admin', icon: '👨‍💼' }
+    { value: ROLES.SHIFT_MANAGER, label: 'Shift Manager', icon: <ShifterIcon /> },
+    { value: ROLES.LINE_MANAGER, label: 'Line Manager', icon: <LineIcon /> },
+    { value: ROLES.HR_ADMIN, label: 'HR Admin', icon: <AdminIcon /> }
   ]
 
   return (
@@ -135,36 +181,36 @@ const Register = () => {
         {/* Left Side - Features */}
         <div className="register-features">
           <div className="features-content">
-            <div className="features-icon">✨</div>
-            <h1>Join WorkforceIQ</h1>
-            <p className="features-subtitle">Create your account in seconds</p>
+            <div className="features-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+              </svg>
+            </div>
+            <h1>Create Account</h1>
+            <p className="features-subtitle">Start your journey with WorkforceIQ</p>
             <div className="benefits-list">
               <div className="benefit-item">
-                <span className="benefit-check">✓</span>
+                <span className="benefit-check"><CheckIcon /></span>
                 <div>
                   <div className="benefit-title">Real-time Analytics</div>
-                  <div className="benefit-desc">Get insights as they happen</div>
+                  <div className="benefit-desc">Live performance tracking</div>
                 </div>
               </div>
               <div className="benefit-item">
-                <span className="benefit-check">✓</span>
+                <span className="benefit-check"><CheckIcon /></span>
                 <div>
-                  <div className="benefit-title">Team Management</div>
-                  <div className="benefit-desc">Manage teams efficiently</div>
+                  <div className="benefit-title">Team Harmony</div>
+                  <div className="benefit-desc">Optimize team composition</div>
                 </div>
               </div>
               <div className="benefit-item">
-                <span className="benefit-check">✓</span>
+                <span className="benefit-check"><CheckIcon /></span>
                 <div>
-                  <div className="benefit-title">Skill Tracking</div>
-                  <div className="benefit-desc">Monitor employee development</div>
-                </div>
-              </div>
-              <div className="benefit-item">
-                <span className="benefit-check">✓</span>
-                <div>
-                  <div className="benefit-title">Data Security</div>
-                  <div className="benefit-desc">Enterprise-grade protection</div>
+                  <div className="benefit-title">Skill Clarity</div>
+                  <div className="benefit-desc">Monitor competency levels</div>
                 </div>
               </div>
             </div>
@@ -175,19 +221,22 @@ const Register = () => {
         <div className="register-form-container">
           <div className="register-card">
             <div className="register-header-section">
-              <h2>Create Account</h2>
-              <p className="register-subtitle">Sign up to get started</p>
+              <h2>Register</h2>
+              <p className="register-subtitle">Join over 1,000 managers using WorkforceIQ</p>
             </div>
 
             {apiError && (
               <div className="alert alert-error">
-                <span className="alert-icon">⚠️</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                  <line x1="12" y1="9" x2="12" y2="13"></line>
+                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
                 <span>{apiError}</span>
               </div>
             )}
 
             <form onSubmit={handleSubmit} className="register-form">
-              {/* Full Name */}
               <div className="form-group">
                 <label htmlFor="name" className="form-label">Full Name</label>
                 <Input
@@ -201,34 +250,19 @@ const Register = () => {
                 />
               </div>
 
-              {/* Email */}
               <div className="form-group">
                 <label htmlFor="email" className="form-label">Email Address</label>
                 <Input
                   id="email"
                   type="email"
                   name="email"
-                  placeholder="you@example.com"
+                  placeholder="name@company.com"
                   value={formData.email}
                   onChange={handleInputChange}
                   error={errors.email}
                 />
               </div>
 
-              {/* Employee ID */}
-              <div className="form-group">
-                <label htmlFor="employeeId" className="form-label">Employee ID <span className="optional">(Optional)</span></label>
-                <Input
-                  id="employeeId"
-                  type="text"
-                  name="employeeId"
-                  placeholder="EMP-12345"
-                  value={formData.employeeId}
-                  onChange={handleInputChange}
-                />
-              </div>
-
-              {/* Role Selection */}
               <div className="form-group">
                 <label htmlFor="role" className="form-label">Your Role</label>
                 <div className="role-selection">
@@ -248,7 +282,6 @@ const Register = () => {
                 </div>
               </div>
 
-              {/* Password */}
               <div className="form-group">
                 <label htmlFor="password" className="form-label">Password</label>
                 <div className="password-input-wrapper">
@@ -256,7 +289,7 @@ const Register = () => {
                     id="password"
                     type={showPassword ? 'text' : 'password'}
                     name="password"
-                    placeholder="Create a strong password"
+                    placeholder="••••••••"
                     value={formData.password}
                     onChange={handlePasswordChange}
                     error={errors.password}
@@ -267,7 +300,7 @@ const Register = () => {
                     onClick={() => setShowPassword(!showPassword)}
                     aria-label="Toggle password visibility"
                   >
-                    {showPassword ? '👁️' : '🙈'}
+                    <EyeIcon show={showPassword} />
                   </button>
                 </div>
                 {formData.password && (
@@ -288,7 +321,6 @@ const Register = () => {
                 )}
               </div>
 
-              {/* Confirm Password */}
               <div className="form-group">
                 <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
                 <div className="password-input-wrapper">
@@ -296,7 +328,7 @@ const Register = () => {
                     id="confirmPassword"
                     type={showConfirmPassword ? 'text' : 'password'}
                     name="confirmPassword"
-                    placeholder="Re-enter your password"
+                    placeholder="••••••••"
                     value={formData.confirmPassword}
                     onChange={handleInputChange}
                     error={errors.confirmPassword}
@@ -307,12 +339,11 @@ const Register = () => {
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     aria-label="Toggle confirm password visibility"
                   >
-                    {showConfirmPassword ? '👁️' : '🙈'}
+                    <EyeIcon show={showConfirmPassword} />
                   </button>
                 </div>
               </div>
 
-              {/* Terms & Conditions */}
               <div className="form-checkbox">
                 <input
                   type="checkbox"
@@ -324,12 +355,10 @@ const Register = () => {
                   }}
                 />
                 <label htmlFor="tos">
-                  I agree to the <a href="#tos">Terms of Service</a> and <a href="#privacy">Privacy Policy</a>
+                  Agree to <a href="#tos">Terms</a> & <a href="#privacy">Privacy</a>
                 </label>
               </div>
-              {errors.tos && <span className="error-text">{errors.tos}</span>}
 
-              {/* Submit Button */}
               <Button
                 type="submit"
                 variant="primary"
@@ -338,18 +367,10 @@ const Register = () => {
                 disabled={loading}
                 className="register-button"
               >
-                {loading ? (
-                  <>
-                    <span className="spinner"></span>
-                    Creating account...
-                  </>
-                ) : (
-                  'Create Account'
-                )}
+                {loading ? 'Creating account...' : 'Create Account'}
               </Button>
             </form>
 
-            {/* Login Link */}
             <div className="register-footer">
               <p>
                 Already have an account?

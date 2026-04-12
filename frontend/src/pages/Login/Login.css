@@ -275,12 +275,12 @@
 
 .password-toggle {
   position: absolute;
-  right: 1.25rem;
+  right: 1rem;
   top: 50%;
   transform: translateY(-50%);
   background: transparent;
   border: none;
-  font-size: 1.25rem;
+  outline: none;
   cursor: pointer;
   padding: 0.5rem;
   display: flex;
@@ -288,12 +288,18 @@
   justify-content: center;
   transition: all 0.2s ease;
   color: #94a3b8;
-  z-index: 2;
+  z-index: 10;
+  border-radius: 50%;
 }
 
 .password-toggle:hover {
-  color: #64748b;
-  transform: translateY(-50%) scale(1.1);
+  color: #4f46e5;
+  background: rgba(79, 70, 229, 0.05);
+}
+
+.password-toggle:focus {
+  outline: none;
+  box-shadow: none;
 }
 
 /* Form Checkbox */
