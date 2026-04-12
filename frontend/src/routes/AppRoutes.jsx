@@ -1,5 +1,6 @@
 import React from 'react'
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom'
+import { AnimatePresence } from 'framer-motion'
 import PrivateRoute from './PrivateRoute'
 import RoleBasedRoute from './RoleBasedRoute'
 import { ROLES } from '../utils/constants'
@@ -21,10 +22,12 @@ import Reports from '../pages/Reports/Reports'
 import Settings from '../pages/Settings/Settings'
 import NotFound from '../pages/NotFound/NotFound'
 
-const AppRoutes = () => {
+const AnimatedRoutes = () => {
+  const location = useLocation()
+  
   return (
-    <Router>
-      <Routes>
+    <AnimatePresence mode="wait">
+      <Routes location={location} key={location.pathname}>
         {/* Public Routes */}
         <Route path="/" element={<Landing />} />
         <Route path="/login" element={<Login />} />
@@ -52,6 +55,14 @@ const AppRoutes = () => {
         {/* Not Found */}
         <Route path="*" element={<NotFound />} />
       </Routes>
+    </AnimatePresence>
+  )
+}
+
+const AppRoutes = () => {
+  return (
+    <Router>
+      <AnimatedRoutes />
     </Router>
   )
 }

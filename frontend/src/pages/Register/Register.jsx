@@ -1,10 +1,14 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import anime from 'animejs/lib/anime.es.js'
 import { useAuth } from '../../hooks/useAuth'
 import { validateEmail, validatePassword } from '../../utils/validators'
 import { ROLES } from '../../utils/constants'
 import Input from '../../components/common/Input/Input'
-import Button from '../../components/common/Button/Button'
+import AnimatedButton from '../../components/common/AnimatedButton/AnimatedButton'
+import GradientText from '../../components/common/GradientText/GradientText'
+import ParticleField from '../../components/common/ParticleField/ParticleField'
 import './Register.css'
 
 const EyeIcon = ({ show }) => (
@@ -53,6 +57,24 @@ const AdminIcon = () => (
   </svg>
 )
 
+// Framer Motion variants
+const containerVariants = {
+  initial: { opacity: 0 },
+  animate: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08, delayChildren: 0.2 },
+  },
+}
+
+const itemVariants = {
+  initial: { opacity: 0, y: 20 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
+  },
+}
+
 const Register = () => {
   const [formData, setFormData] = useState({
     name: '',
@@ -71,6 +93,21 @@ const Register = () => {
   const [tosAgree, setTosAgree] = useState(false)
   const { register } = useAuth()
   const navigate = useNavigate()
+
+  // Anime.js intro for features
+  const benefitsListRef = useRef(null)
+  useEffect(() => {
+    if (!benefitsListRef.current) return
+    const items = benefitsListRef.current.querySelectorAll('.benefit-item')
+    anime({
+      targets: items,
+      opacity: [0, 1],
+      translateX: [-30, 0],
+      delay: anime.stagger(120, { start: 800 }),
+      duration: 700,
+      easing: 'easeOutCubic',
+    })
+  }, [])
 
   const calculatePasswordStrength = (pwd) => {
     if (!pwd) return 0
@@ -177,67 +214,97 @@ const Register = () => {
 
   return (
     <div className="register-layout">
-      <div className="register-container">
-        {/* Left Side - Features */}
+      {/* Background mesh gradient */}
+      <div className="register-bg-mesh" />
+
+      <motion.div
+        className="register-container"
+        initial={{ opacity: 0, y: 30, scale: 0.97 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        exit={{ opacity: 0, y: -20, scale: 0.98, transition: { duration: 0.3 } }}
+        transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
+      >
+        {/* Left Side - Branding */}
         <div className="register-features">
+          <ParticleField count={20} color="rgba(255, 255, 255, 0.12)" />
           <div className="features-content">
-            <div className="features-icon">
+            <motion.div
+              className="features-icon"
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.3, type: 'spring', stiffness: 200, damping: 15 }}
+            >
               <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path>
                 <circle cx="9" cy="7" r="4"></circle>
                 <path d="M22 21v-2a4 4 0 0 0-3-3.87"></path>
                 <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
               </svg>
-            </div>
-            <h1>Create Account</h1>
-            <p className="features-subtitle">Start your journey with WorkforceIQ</p>
-            <div className="benefits-list">
-              <div className="benefit-item">
-                <span className="benefit-check"><CheckIcon /></span>
-                <div>
-                  <div className="benefit-title">Real-time Analytics</div>
-                  <div className="benefit-desc">Live performance tracking</div>
+            </motion.div>
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+            >
+              Start Your <span>Journey</span>
+            </motion.h1>
+            <motion.p
+              className="features-subtitle"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.9 }}
+              transition={{ delay: 0.55, duration: 0.5 }}
+            >
+              Join world-class managers using WorkforceIQ
+            </motion.p>
+            <div className="benefits-list" ref={benefitsListRef}>
+              {[
+                { title: 'Real-time Analytics', desc: 'Live performance tracking' },
+                { title: 'Team Harmony', desc: 'Optimize team composition' },
+                { title: 'Skill Clarity', desc: 'Monitor competency levels' },
+              ].map((benefit, i) => (
+                <div key={i} className="benefit-item" style={{ opacity: 0 }}>
+                  <span className="benefit-check"><CheckIcon /></span>
+                  <div>
+                    <div className="benefit-title">{benefit.title}</div>
+                    <div className="benefit-desc">{benefit.desc}</div>
+                  </div>
                 </div>
-              </div>
-              <div className="benefit-item">
-                <span className="benefit-check"><CheckIcon /></span>
-                <div>
-                  <div className="benefit-title">Team Harmony</div>
-                  <div className="benefit-desc">Optimize team composition</div>
-                </div>
-              </div>
-              <div className="benefit-item">
-                <span className="benefit-check"><CheckIcon /></span>
-                <div>
-                  <div className="benefit-title">Skill Clarity</div>
-                  <div className="benefit-desc">Monitor competency levels</div>
-                </div>
-              </div>
+              ))}
             </div>
           </div>
         </div>
 
         {/* Right Side - Register Form */}
-        <div className="register-form-container">
+        <motion.div
+          className="register-form-container"
+          variants={containerVariants}
+          initial="initial"
+          animate="animate"
+        >
           <div className="register-card">
-            <div className="register-header-section">
-              <h2>Register</h2>
-              <p className="register-subtitle">Join over 1,000 managers using WorkforceIQ</p>
-            </div>
+            <motion.div variants={itemVariants} className="register-header-section">
+              <h2>Join WorkforceIQ</h2>
+              <p className="register-subtitle">Create your professional profile today</p>
+            </motion.div>
 
             {apiError && (
-              <div className="alert alert-error">
+              <motion.div
+                className="alert alert-error"
+                initial={{ opacity: 0, scale: 0.95, x: -10 }}
+                animate={{ opacity: 1, scale: 1, x: 0 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
                   <line x1="12" y1="9" x2="12" y2="13"></line>
                   <line x1="12" y1="17" x2="12.01" y2="17"></line>
                 </svg>
                 <span>{apiError}</span>
-              </div>
+              </motion.div>
             )}
 
             <form onSubmit={handleSubmit} className="register-form">
-              <div className="form-group">
+              <motion.div variants={itemVariants} className="form-group">
                 <label htmlFor="name" className="form-label">Full Name</label>
                 <Input
                   id="name"
@@ -248,9 +315,9 @@ const Register = () => {
                   onChange={handleInputChange}
                   error={errors.name}
                 />
-              </div>
+              </motion.div>
 
-              <div className="form-group">
+              <motion.div variants={itemVariants} className="form-group">
                 <label htmlFor="email" className="form-label">Email Address</label>
                 <Input
                   id="email"
@@ -261,13 +328,18 @@ const Register = () => {
                   onChange={handleInputChange}
                   error={errors.email}
                 />
-              </div>
+              </motion.div>
 
-              <div className="form-group">
-                <label htmlFor="role" className="form-label">Your Role</label>
+              <motion.div variants={itemVariants} className="form-group">
+                <label className="form-label">Choose Your Role</label>
                 <div className="role-selection">
                   {roleOptions.map((option) => (
-                    <label key={option.value} className={`role-option ${formData.role === option.value ? 'selected' : ''}`}>
+                    <motion.label
+                      key={option.value}
+                      className={`role-option ${formData.role === option.value ? 'selected' : ''}`}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
                       <input
                         type="radio"
                         name="role"
@@ -277,12 +349,12 @@ const Register = () => {
                       />
                       <span className="role-icon">{option.icon}</span>
                       <span className="role-label">{option.label}</span>
-                    </label>
+                    </motion.label>
                   ))}
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="form-group">
+              <motion.div variants={itemVariants} className="form-group">
                 <label htmlFor="password" className="form-label">Password</label>
                 <div className="password-input-wrapper">
                   <Input
@@ -304,24 +376,27 @@ const Register = () => {
                   </button>
                 </div>
                 {formData.password && (
-                  <div className="password-strength">
+                  <motion.div
+                    className="password-strength"
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                  >
                     <div className="strength-bar">
-                      <div
+                      <motion.div
                         className="strength-fill"
-                        style={{
-                          width: `${(passwordStrength / 4) * 100}%`,
-                          backgroundColor: getPasswordStrengthColor()
-                        }}
+                        initial={{ width: 0 }}
+                        animate={{ width: `${(passwordStrength / 4) * 100}%` }}
+                        style={{ backgroundColor: getPasswordStrengthColor() }}
                       />
                     </div>
                     <span className="strength-text" style={{ color: getPasswordStrengthColor() }}>
                       {getPasswordStrengthLabel()} password
                     </span>
-                  </div>
+                  </motion.div>
                 )}
-              </div>
+              </motion.div>
 
-              <div className="form-group">
+              <motion.div variants={itemVariants} className="form-group">
                 <label htmlFor="confirmPassword" className="form-label">Confirm Password</label>
                 <div className="password-input-wrapper">
                   <Input
@@ -342,9 +417,9 @@ const Register = () => {
                     <EyeIcon show={showConfirmPassword} />
                   </button>
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="form-checkbox">
+              <motion.div variants={itemVariants} className="form-checkbox">
                 <input
                   type="checkbox"
                   id="tos"
@@ -355,31 +430,41 @@ const Register = () => {
                   }}
                 />
                 <label htmlFor="tos">
-                  Agree to <a href="#tos">Terms</a> & <a href="#privacy">Privacy</a>
+                  Agree to <a href="#tos">Terms</a> & <a href="#privacy">Privacy Policy</a>
                 </label>
-              </div>
+              </motion.div>
 
-              <Button
-                type="submit"
-                variant="primary"
-                size="lg"
-                fullWidth
-                disabled={loading}
-                className="register-button"
-              >
-                {loading ? 'Creating account...' : 'Create Account'}
-              </Button>
+              <motion.div variants={itemVariants}>
+                <AnimatedButton
+                  type="submit"
+                  variant="primary"
+                  size="lg"
+                  fullWidth
+                  glow
+                  disabled={loading}
+                  className="register-button"
+                >
+                  {loading ? (
+                    <>
+                      <span className="spinner"></span>
+                      Creating Account...
+                    </>
+                  ) : (
+                    'Create My Account'
+                  )}
+                </AnimatedButton>
+              </motion.div>
             </form>
 
-            <div className="register-footer">
+            <motion.div variants={itemVariants} className="register-footer">
               <p>
                 Already have an account?
-                <Link to="/login" className="login-link">Sign in</Link>
+                <Link to="/login" className="login-link">Sign in instead</Link>
               </p>
-            </div>
+            </motion.div>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </div>
   )
 }
