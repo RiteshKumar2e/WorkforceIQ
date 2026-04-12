@@ -1,0 +1,125 @@
+/* Table Component Styles */
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+}
+
+.table-wrapper table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: var(--color-white, #ffffff);
+  border: 1px solid var(--color-border, #e2e8f0);
+  border-radius: var(--radius-md, 8px);
+  overflow: hidden;
+}
+
+.table-wrapper thead {
+  background-color: var(--color-bg-secondary, #f8fafc);
+  border-bottom: 2px solid var(--color-border, #e2e8f0);
+}
+
+.table-wrapper th {
+  padding: var(--spacing-3, 12px);
+  text-align: left;
+  font-weight: 600;
+  color: var(--color-text-secondary, #64748b);
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.table-wrapper td {
+  padding: var(--spacing-3, 12px);
+  border-bottom: 1px solid var(--color-border, #e2e8f0);
+  color: var(--color-text-primary, #1e293b);
+  font-size: 0.95rem;
+}
+
+.table-wrapper tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* Striped Table */
+.table-wrapper table.table-striped tbody tr:nth-child(odd) {
+  background-color: var(--color-bg-secondary, #f8fafc);
+}
+
+.table-wrapper table.table-striped tbody tr:nth-child(even) {
+  background-color: var(--color-white, #ffffff);
+}
+
+/* Hover Effect */
+.table-wrapper table.table-hover tbody tr {
+  transition: background-color 0.2s ease;
+}
+
+.table-wrapper table.table-hover tbody tr:hover {
+  background-color: var(--color-primary-light, #eff6ff);
+}
+
+/* Actions Column */
+.table-actions {
+  display: flex;
+  gap: var(--spacing-2, 8px);
+  align-items: center;
+}
+
+.table-action-btn {
+  padding: var(--spacing-1, 4px) var(--spacing-2, 8px);
+  border: none;
+  border-radius: var(--radius-sm, 4px);
+  background-color: transparent;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+}
+
+.table-action-btn:hover {
+  background-color: var(--color-bg-secondary, #f8fafc);
+}
+
+.table-action-btn.edit {
+  color: var(--color-primary, #3b82f6);
+}
+
+.table-action-btn.delete {
+  color: var(--color-danger, #ef4444);
+}
+
+.table-action-btn.view {
+  color: var(--color-success, #22c55e);
+}
+
+/* Empty State */
+.table-empty {
+  padding: var(--spacing-8, 32px);
+  text-align: center;
+  background-color: var(--color-bg-secondary, #f8fafc);
+}
+
+.table-empty p {
+  color: var(--color-text-secondary, #64748b);
+  margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .table-wrapper {
+    font-size: 0.85rem;
+  }
+
+  .table-wrapper th,
+  .table-wrapper td {
+    padding: var(--spacing-2, 8px);
+  }
+
+  .table-actions {
+    gap: var(--spacing-1, 4px);
+  }
+
+  .table-action-btn {
+    padding: var(--spacing-1, 4px) var(--spacing-1, 4px);
+    font-size: 0.75rem;
+  }
+}

@@ -1,0 +1,56 @@
+/* Light Theme - Application Colors and Tokens */
+
+:root {
+  /* Light Theme - Primary Colors */
+  --color-primary: var(--primary-600);
+  --color-primary-light: var(--primary-50);
+  --color-primary-dark: var(--primary-900);
+
+  /* Light Theme - Secondary Colors */
+  --color-secondary: var(--secondary-600);
+  --color-secondary-light: var(--secondary-100);
+
+  /* Light Theme - Status Colors */
+  --color-success: var(--success-600);
+  --color-warning: var(--warning-600);
+  --color-error: var(--danger-600);
+  --color-info: var(--primary-600);
+
+  /* Light Theme - Background */
+  --color-bg-default: var(--bg-primary);
+  --color-bg-hover: var(--bg-tertiary);
+  --color-bg-active: var(--primary-50);
+  --color-bg-disabled: var(--bg-tertiary);
+
+  /* Light Theme - Text */
+  --color-text-default: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  --color-text-disabled: var(--text-tertiary);
+
+  /* Light Theme - Borders */
+  --color-border-default: var(--border-color);
+  --color-border-light: var(--border-color-light);
+  --color-border-focus: var(--primary-500);
+
+  /* Light Theme - Interactive */
+  --color-link: var(--primary-600);
+  --color-link-hover: var(--primary-700);
+  --color-link-visited: var(--primary-900);
+}
+
+/* Apply Light Theme */
+body {
+  background-color: var(--color-bg-default);
+  color: var(--color-text-default);
+}
+
+::selection {
+  background-color: var(--primary-200);
+  color: var(--primary-900);
+}
+
+::-moz-selection {
+  background-color: var(--primary-200);
+  color: var(--primary-900);
+}
