@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 import Button from '../../components/common/Button/Button'
-import heroImage from '../../../workforce_analytics_hero_1776004220987.png'
+import heroImage from '../../assets/hero.png'
 import './Landing.css'
 
 const CheckIcon = () => (
