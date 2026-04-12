@@ -1,7 +1,8 @@
 .navbar {
-  background-color: var(--color-bg-default);
-  border-bottom: 1px solid var(--color-border-default);
-  box-shadow: var(--shadow-xs);
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.5);
   position: sticky;
   top: 0;
   z-index: 100;
@@ -10,7 +11,7 @@
 .navbar-container {
   max-width: 100%;
   margin: 0;
-  padding: var(--spacing-md) var(--spacing-lg);
+  padding: 0.75rem 1.5rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -19,65 +20,81 @@
 .navbar-brand {
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
+  gap: 0.875rem;
 }
 
 .navbar-toggle {
   background: none;
   border: none;
-  font-size: var(--text-xl);
   cursor: pointer;
-  color: var(--text-primary);
-  padding: var(--spacing-sm);
+  color: #475569;
+  padding: 0.5rem;
   display: none;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  transition: background 0.2s ease;
+}
+
+.navbar-toggle:hover {
+  background: rgba(0, 0, 0, 0.04);
 }
 
 .navbar-logo {
-  font-size: var(--text-lg);
-  font-weight: 700;
-  color: var(--color-primary);
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #1e293b;
   text-decoration: none;
-  transition: color var(--transition-fast);
+  letter-spacing: -0.5px;
+  transition: color 0.2s ease;
+}
+
+.navbar-logo span {
+  background: var(--gradient-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .navbar-logo:hover {
-  color: var(--primary-700);
+  color: #0f172a;
 }
 
 .navbar-content {
   display: flex;
   align-items: center;
-  gap: var(--spacing-lg);
+  gap: 1rem;
 }
 
 .navbar-user {
   display: flex;
   align-items: center;
-  gap: var(--spacing-md);
+  gap: 0.75rem;
 }
 
 .navbar-username {
-  font-size: var(--text-sm);
-  color: var(--text-secondary);
-  font-weight: 500;
+  font-size: 0.85rem;
+  color: #64748b;
+  font-weight: 600;
 }
 
 .navbar-avatar {
-  width: 32px;
-  height: 32px;
-  border-radius: var(--radius-full);
-  background-color: var(--primary-600);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-weight: 600;
-  font-size: var(--text-sm);
+  font-weight: 700;
+  font-size: 0.85rem;
+  box-shadow: 0 2px 8px rgba(79, 70, 229, 0.3);
+  cursor: pointer;
 }
 
 @media (max-width: 639px) {
   .navbar-toggle {
-    display: block;
+    display: flex;
   }
 
   .navbar-username {
@@ -85,6 +102,6 @@
   }
 
   .navbar-content {
-    gap: var(--spacing-sm);
+    gap: 0.5rem;
   }
 }

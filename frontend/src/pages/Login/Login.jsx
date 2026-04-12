@@ -1,9 +1,13 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import anime from 'animejs/lib/anime.es.js'
 import { useAuth } from '../../hooks/useAuth'
 import { validateEmail, validatePassword } from '../../utils/validators'
 import Input from '../../components/common/Input/Input'
-import Button from '../../components/common/Button/Button'
+import AnimatedButton from '../../components/common/AnimatedButton/AnimatedButton'
+import GradientText from '../../components/common/GradientText/GradientText'
+import ParticleField from '../../components/common/ParticleField/ParticleField'
 import './Login.css'
 
 const EyeIcon = ({ show }) => (
@@ -28,6 +32,24 @@ const CheckIcon = () => (
   </svg>
 )
 
+// Framer Motion variants
+const containerVariants = {
+  initial: { opacity: 0 },
+  animate: {
+    opacity: 1,
+    transition: { staggerChildren: 0.08, delayChildren: 0.2 },
+  },
+}
+
+const itemVariants = {
+  initial: { opacity: 0, y: 20 },
+  animate: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.5, ease: [0.25, 0.46, 0.45, 0.94] },
+  },
+}
+
 const Login = () => {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
@@ -38,6 +60,21 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
   const { login } = useAuth()
   const navigate = useNavigate()
+
+  // Anime.js intro for branding features
+  const featuresListRef = useRef(null)
+  useEffect(() => {
+    if (!featuresListRef.current) return
+    const items = featuresListRef.current.querySelectorAll('.feature')
+    anime({
+      targets: items,
+      opacity: [0, 1],
+      translateX: [-30, 0],
+      delay: anime.stagger(120, { start: 800 }),
+      duration: 700,
+      easing: 'easeOutCubic',
+    })
+  }, [])
 
   const validateForm = () => {
     const newErrors = {}
@@ -96,60 +133,92 @@ const Login = () => {
 
   return (
     <div className="login-layout">
-      <div className="login-container">
+      {/* Background mesh gradient */}
+      <div className="login-bg-mesh" />
+
+      <motion.div
+        className="login-container"
+        initial={{ opacity: 0, y: 30, scale: 0.97 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.7, ease: [0.25, 0.46, 0.45, 0.94] }}
+      >
         {/* Left Side - Branding */}
         <div className="login-branding">
+          <ParticleField count={20} color="rgba(255, 255, 255, 0.12)" />
           <div className="branding-content">
-            <div className="branding-icon">
+            <motion.div
+              className="branding-icon"
+              initial={{ scale: 0, rotate: -180 }}
+              animate={{ scale: 1, rotate: 0 }}
+              transition={{ delay: 0.3, type: 'spring', stiffness: 200, damping: 15 }}
+            >
               <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path>
                 <path d="M22 12A10 10 0 0 0 12 2v10z"></path>
               </svg>
-            </div>
-            <h1>Workforce<span>IQ</span></h1>
-            <p className="branding-subtitle">Advanced People Intelligence Platform</p>
-            <div className="branding-features">
-              <div className="feature">
-                <span className="feature-icon"><CheckIcon /></span>
-                <span>Employee Analytics</span>
-              </div>
-              <div className="feature">
-                <span className="feature-icon"><CheckIcon /></span>
-                <span>Team Management</span>
-              </div>
-              <div className="feature">
-                <span className="feature-icon"><CheckIcon /></span>
-                <span>Skill Assessment</span>
-              </div>
-              <div className="feature">
-                <span className="feature-icon"><CheckIcon /></span>
-                <span>Promotion Tracking</span>
-              </div>
+            </motion.div>
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.4, duration: 0.6 }}
+            >
+              Workforce<span>IQ</span>
+            </motion.h1>
+            <motion.p
+              className="branding-subtitle"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.9 }}
+              transition={{ delay: 0.55, duration: 0.5 }}
+            >
+              Advanced People Intelligence Platform
+            </motion.p>
+            <div className="branding-features" ref={featuresListRef}>
+              {[
+                'Employee Analytics',
+                'Team Management',
+                'Skill Assessment',
+                'Promotion Tracking',
+              ].map((text, i) => (
+                <div key={i} className="feature" style={{ opacity: 0 }}>
+                  <span className="feature-icon"><CheckIcon /></span>
+                  <span>{text}</span>
+                </div>
+              ))}
             </div>
           </div>
         </div>
 
         {/* Right Side - Login Form */}
-        <div className="login-form-container">
+        <motion.div
+          className="login-form-container"
+          variants={containerVariants}
+          initial="initial"
+          animate="animate"
+        >
           <div className="login-card">
-            <div className="login-header-section">
+            <motion.div variants={itemVariants} className="login-header-section">
               <h2>Sign In</h2>
               <p className="login-subtitle">Access your organization's workforce insights</p>
-            </div>
+            </motion.div>
 
             {apiError && (
-              <div className="alert alert-error">
+              <motion.div
+                className="alert alert-error"
+                initial={{ opacity: 0, scale: 0.95, x: -10 }}
+                animate={{ opacity: 1, scale: 1, x: 0 }}
+                transition={{ type: 'spring', stiffness: 300, damping: 20 }}
+              >
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
                   <line x1="12" y1="9" x2="12" y2="13"></line>
                   <line x1="12" y1="17" x2="12.01" y2="17"></line>
                 </svg>
                 <span>{apiError}</span>
-              </div>
+              </motion.div>
             )}
 
             <form onSubmit={handleSubmit} className="login-form">
-              <div className="form-group">
+              <motion.div variants={itemVariants} className="form-group">
                 <label htmlFor="email" className="form-label">Email Address</label>
                 <Input
                   id="email"
@@ -162,9 +231,9 @@ const Login = () => {
                   }}
                   error={errors.email}
                 />
-              </div>
+              </motion.div>
 
-              <div className="form-group">
+              <motion.div variants={itemVariants} className="form-group">
                 <div className="password-label-row">
                   <label htmlFor="password" className="form-label">Password</label>
                   <Link to="#forgot" className="forgot-link">Forgot password?</Link>
@@ -190,9 +259,9 @@ const Login = () => {
                     <EyeIcon show={showPassword} />
                   </button>
                 </div>
-              </div>
+              </motion.div>
 
-              <div className="form-checkbox">
+              <motion.div variants={itemVariants} className="form-checkbox">
                 <input
                   type="checkbox"
                   id="rememberMe"
@@ -200,74 +269,70 @@ const Login = () => {
                   onChange={(e) => setRememberMe(e.target.checked)}
                 />
                 <label htmlFor="rememberMe">Remember me for 30 days</label>
-              </div>
+              </motion.div>
 
-              <Button
-                type="submit"
-                variant="primary"
-                size="lg"
-                fullWidth
-                disabled={loading}
-                className="login-button"
-              >
-                {loading ? (
-                  <>
-                    <span className="spinner"></span>
-                    Signing in...
-                  </>
-                ) : (
-                  'Sign In'
-                )}
-              </Button>
+              <motion.div variants={itemVariants}>
+                <AnimatedButton
+                  type="submit"
+                  variant="primary"
+                  size="lg"
+                  fullWidth
+                  glow
+                  disabled={loading}
+                  className="login-button"
+                >
+                  {loading ? (
+                    <>
+                      <span className="spinner"></span>
+                      Signing in...
+                    </>
+                  ) : (
+                    'Sign In'
+                  )}
+                </AnimatedButton>
+              </motion.div>
             </form>
 
-            <div className="divider">
+            <motion.div variants={itemVariants} className="divider">
               <span>EXPLORE DEMO</span>
-            </div>
+            </motion.div>
 
             {/* Demo Credentials */}
-            <div className="demo-section">
+            <motion.div variants={itemVariants} className="demo-section">
               <div className="demo-buttons">
-                <button
-                  type="button"
-                  className="demo-button"
-                  onClick={() => handleDemoLogin('manager1@munger.com')}
-                  disabled={loading}
-                >
-                  <span className="demo-label">Shift Manager</span>
-                  <span className="demo-email">manager1@munger.com</span>
-                </button>
-                <button
-                  type="button"
-                  className="demo-button"
-                  onClick={() => handleDemoLogin('hr@munger.com')}
-                  disabled={loading}
-                >
-                  <span className="demo-label">HR Admin</span>
-                  <span className="demo-email">hr@munger.com</span>
-                </button>
-                <button
-                  type="button"
-                  className="demo-button"
-                  onClick={() => handleDemoLogin('manager2@munger.com')}
-                  disabled={loading}
-                >
-                  <span className="demo-label">Line Manager</span>
-                  <span className="demo-email">manager2@munger.com</span>
-                </button>
+                {[
+                  { label: 'Shift Manager', email: 'manager1@munger.com', icon: '👤' },
+                  { label: 'HR Admin', email: 'hr@munger.com', icon: '🏢' },
+                  { label: 'Line Manager', email: 'manager2@munger.com', icon: '📊' },
+                ].map((demo, i) => (
+                  <motion.button
+                    key={i}
+                    type="button"
+                    className="demo-button"
+                    onClick={() => handleDemoLogin(demo.email)}
+                    disabled={loading}
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+                  >
+                    <span className="demo-icon">{demo.icon}</span>
+                    <span className="demo-label">{demo.label}</span>
+                    <span className="demo-email">{demo.email}</span>
+                  </motion.button>
+                ))}
               </div>
               <p className="demo-password">Password: <code>password123</code></p>
-            </div>
+            </motion.div>
 
-            <div className="login-footer">
+            <motion.div variants={itemVariants} className="login-footer">
               <p>
                 New to WorkforceIQ?
                 <Link to="/register" className="signup-link">Create an account</Link>
               </p>
-            </div>
+            </motion.div>
           </div>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </div>
   )
 }

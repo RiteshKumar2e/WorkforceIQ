@@ -1,0 +1,135 @@
+.anim-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-weight: 700;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  border-radius: 1rem;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+  font-family: inherit;
+  letter-spacing: -0.2px;
+  will-change: transform;
+}
+
+.anim-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  filter: grayscale(0.4);
+}
+
+.anim-btn-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Ripple */
+.btn-ripple {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+  transform: translate(-50%, -50%) scale(0);
+  z-index: 0;
+}
+
+/* Sizes */
+.anim-btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  border-radius: 0.75rem;
+}
+
+.anim-btn-md {
+  padding: 0.75rem 1.5rem;
+  font-size: 0.95rem;
+}
+
+.anim-btn-lg {
+  padding: 1rem 2rem;
+  font-size: 1.05rem;
+  border-radius: 1.25rem;
+}
+
+.anim-btn-block {
+  width: 100%;
+}
+
+/* Primary */
+.anim-btn-primary {
+  background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+  color: white;
+  box-shadow: 0 4px 14px -2px rgba(79, 70, 229, 0.4);
+}
+
+.anim-btn-primary:hover:not(:disabled) {
+  box-shadow: 0 8px 25px -4px rgba(79, 70, 229, 0.5);
+}
+
+/* Secondary */
+.anim-btn-secondary {
+  background: white;
+  color: #1e293b;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px -2px rgba(0, 0, 0, 0.08);
+}
+
+.anim-btn-secondary:hover:not(:disabled) {
+  border-color: #cbd5e1;
+  box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.12);
+}
+
+/* Outline Primary */
+.anim-btn-outline-primary {
+  background: transparent;
+  color: #4f46e5;
+  border: 2px solid rgba(79, 70, 229, 0.3);
+}
+
+.anim-btn-outline-primary:hover:not(:disabled) {
+  background: rgba(79, 70, 229, 0.05);
+  border-color: #4f46e5;
+  box-shadow: 0 4px 14px -2px rgba(79, 70, 229, 0.2);
+}
+
+.anim-btn-outline-primary .btn-ripple {
+  background: rgba(79, 70, 229, 0.2);
+}
+
+/* Ghost */
+.anim-btn-ghost {
+  background: transparent;
+  color: #64748b;
+  border: none;
+}
+
+.anim-btn-ghost:hover:not(:disabled) {
+  background: rgba(0, 0, 0, 0.04);
+  color: #1e293b;
+}
+
+.anim-btn-ghost .btn-ripple {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+/* Glow effect */
+.anim-btn-glow.anim-btn-primary {
+  box-shadow:
+    0 4px 14px -2px rgba(79, 70, 229, 0.4),
+    0 0 30px -5px rgba(79, 70, 229, 0.3);
+}
+
+.anim-btn-glow.anim-btn-primary:hover:not(:disabled) {
+  box-shadow:
+    0 8px 25px -4px rgba(79, 70, 229, 0.5),
+    0 0 50px -5px rgba(79, 70, 229, 0.4);
+}

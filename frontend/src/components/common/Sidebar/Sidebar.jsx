@@ -1,9 +1,33 @@
 import React from 'react'
+import { motion } from 'framer-motion'
 import './Sidebar.css'
 import { Link, useLocation } from 'react-router-dom'
 import { useAuth } from '../../../hooks/useAuth'
 import { useRole } from '../../../hooks/useRole'
 import { ROLES } from '../../../utils/constants'
+
+const sidebarVariants = {
+  initial: { opacity: 0, x: -10 },
+  animate: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.4,
+      ease: 'easeOut',
+      staggerChildren: 0.04,
+      delayChildren: 0.1,
+    },
+  },
+}
+
+const itemVariants = {
+  initial: { opacity: 0, x: -12 },
+  animate: {
+    opacity: 1,
+    x: 0,
+    transition: { duration: 0.35, ease: 'easeOut' },
+  },
+}
 
 const Sidebar = () => {
   const location = useLocation()
@@ -28,57 +52,87 @@ const Sidebar = () => {
   ]
 
   return (
-    <aside className="sidebar">
+    <motion.aside
+      className="sidebar"
+      variants={sidebarVariants}
+      initial="initial"
+      animate="animate"
+    >
       <div className="sidebar-content">
         <div className="sidebar-menu">
-          <h3 className="sidebar-title">Menu</h3>
+          <motion.h3 variants={itemVariants} className="sidebar-title">Menu</motion.h3>
           <nav>
-            {menuItems.map((item) => (
-              <Link
-                key={item.path}
-                to={item.path}
-                className={`sidebar-item ${isActive(item.path) ? 'active' : ''}`}
-              >
-                <span className="sidebar-icon">{item.icon}</span>
-                <span className="sidebar-label">{item.label}</span>
-              </Link>
+            {menuItems.map((item, i) => (
+              <motion.div key={item.path} variants={itemVariants}>
+                <Link
+                  to={item.path}
+                  className={`sidebar-item ${isActive(item.path) ? 'active' : ''}`}
+                >
+                  <span className="sidebar-icon">{item.icon}</span>
+                  <span className="sidebar-label">{item.label}</span>
+                  {isActive(item.path) && (
+                    <motion.div
+                      className="sidebar-active-indicator"
+                      layoutId="activeIndicator"
+                      transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                    />
+                  )}
+                </Link>
+              </motion.div>
             ))}
           </nav>
         </div>
 
         {isHRAdmin() && (
           <div className="sidebar-menu">
-            <h3 className="sidebar-title">HR Admin</h3>
+            <motion.h3 variants={itemVariants} className="sidebar-title">HR Admin</motion.h3>
             <nav>
               {adminMenuItems.map((item) => (
-                <Link
-                  key={item.path}
-                  to={item.path}
-                  className={`sidebar-item ${isActive(item.path) ? 'active' : ''}`}
-                >
-                  <span className="sidebar-icon">{item.icon}</span>
-                  <span className="sidebar-label">{item.label}</span>
-                </Link>
+                <motion.div key={item.path} variants={itemVariants}>
+                  <Link
+                    to={item.path}
+                    className={`sidebar-item ${isActive(item.path) ? 'active' : ''}`}
+                  >
+                    <span className="sidebar-icon">{item.icon}</span>
+                    <span className="sidebar-label">{item.label}</span>
+                    {isActive(item.path) && (
+                      <motion.div
+                        className="sidebar-active-indicator"
+                        layoutId="activeIndicator"
+                        transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                      />
+                    )}
+                  </Link>
+                </motion.div>
               ))}
             </nav>
           </div>
         )}
 
         <div className="sidebar-menu">
-          <h3 className="sidebar-title">Settings</h3>
+          <motion.h3 variants={itemVariants} className="sidebar-title">Settings</motion.h3>
           <nav>
-            <Link
-              to="/settings"
-              className={`sidebar-item ${isActive('/settings') ? 'active' : ''}`}
-            >
-              <span className="sidebar-icon">⚙️</span>
-              <span className="sidebar-label">Settings</span>
-            </Link>
+            <motion.div variants={itemVariants}>
+              <Link
+                to="/settings"
+                className={`sidebar-item ${isActive('/settings') ? 'active' : ''}`}
+              >
+                <span className="sidebar-icon">⚙️</span>
+                <span className="sidebar-label">Settings</span>
+                {isActive('/settings') && (
+                  <motion.div
+                    className="sidebar-active-indicator"
+                    layoutId="activeIndicator"
+                    transition={{ type: 'spring', stiffness: 350, damping: 30 }}
+                  />
+                )}
+              </Link>
+            </motion.div>
           </nav>
         </div>
       </div>
 
-      <div className="sidebar-footer">
+      <motion.div variants={itemVariants} className="sidebar-footer">
         <div className="sidebar-user">
           <div className="sidebar-avatar">
             {user?.name?.charAt(0).toUpperCase()}
@@ -88,8 +142,8 @@ const Sidebar = () => {
             <p className="sidebar-user-role">{user?.role?.replace('_', ' ')}</p>
           </div>
         </div>
-      </div>
-    </aside>
+      </motion.div>
+    </motion.aside>
   )
 }
 
