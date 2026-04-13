@@ -1,0 +1,214 @@
+{
+  "users": [
+    {
+      "_id": "user_1",
+      "email": "manager1@munger.com",
+      "password": "$2a$10$YourHashedPassword1",
+      "role": "Shift Manager",
+      "status": "active",
+      "createdAt": "2024-01-15T10:30:00Z"
+    },
+    {
+      "_id": "user_2",
+      "email": "manager2@munger.com",
+      "password": "$2a$10$YourHashedPassword2",
+      "role": "Line Manager",
+      "status": "active",
+      "createdAt": "2024-01-15T10:30:00Z"
+    },
+    {
+      "_id": "user_3",
+      "email": "hr@munger.com",
+      "password": "$2a$10$YourHashedPassword3",
+      "role": "HR Admin",
+      "status": "active",
+      "createdAt": "2024-01-15T10:30:00Z"
+    }
+  ],
+  "employees": [
+    {
+      "_id": "emp_1",
+      "employeeId": "EMP001",
+      "name": "Rajesh Kumar",
+      "email": "rajesh.kumar@munger.com",
+      "department": "Manufacturing",
+      "position": "Machine Operator",
+      "competencyScores": {
+        "technical": 78,
+        "leadership": 65,
+        "communication": 72,
+        "problemSolving": 81
+      },
+      "engagementScore": 75,
+      "personalityTraits": ["Dependable", "Analytical", "Team Player"],
+      "promotionReadiness": 72,
+      "yearsOfExperience": 5
+    },
+    {
+      "_id": "emp_2",
+      "employeeId": "EMP002",
+      "name": "Priya Singh",
+      "email": "priya.singh@munger.com",
+      "department": "Quality Assurance",
+      "position": "QA Inspector",
+      "competencyScores": {
+        "technical": 85,
+        "leadership": 76,
+        "communication": 82,
+        "problemSolving": 88
+      },
+      "engagementScore": 82,
+      "personalityTraits": ["Detail-oriented", "Proactive", "Communicative"],
+      "promotionReadiness": 85,
+      "yearsOfExperience": 7
+    },
+    {
+      "_id": "emp_3",
+      "employeeId": "EMP003",
+      "name": "Amit Patel",
+      "email": "amit.patel@munger.com",
+      "department": "Logistics",
+      "position": "Warehouse Supervisor",
+      "competencyScores": {
+        "technical": 72,
+        "leadership": 78,
+        "communication": 75,
+        "problemSolving": 74
+      },
+      "engagementScore": 68,
+      "personalityTraits": ["Organized", "Strategic", "Decisive"],
+      "promotionReadiness": 68,
+      "yearsOfExperience": 6
+    },
+    {
+      "_id": "emp_4",
+      "employeeId": "EMP004",
+      "name": "Neha Sharma",
+      "email": "neha.sharma@munger.com",
+      "department": "HR",
+      "position": "HR Specialist",
+      "competencyScores": {
+        "technical": 80,
+        "leadership": 82,
+        "communication": 88,
+        "problemSolving": 79
+      },
+      "engagementScore": 85,
+      "personalityTraits": ["Empathetic", "Organized", "Leader"],
+      "promotionReadiness": 80,
+      "yearsOfExperience": 4
+    },
+    {
+      "_id": "emp_5",
+      "employeeId": "EMP005",
+      "name": "Vikram Desai",
+      "email": "vikram.desai@munger.com",
+      "department": "Operations",
+      "position": "Operations Manager",
+      "competencyScores": {
+        "technical": 76,
+        "leadership": 85,
+        "communication": 80,
+        "problemSolving": 83
+      },
+      "engagementScore": 79,
+      "personalityTraits": ["Visionary", "Motivator", "Strategic"],
+      "promotionReadiness": 87,
+      "yearsOfExperience": 8
+    }
+  ],
+  "trainingFlags": [
+    {
+      "_id": "tf_1",
+      "employeeId": "emp_1",
+      "skillGap": "Advanced Excel Skills",
+      "urgency": "high",
+      "status": "pending",
+      "targetDate": "2024-06-30",
+      "createdAt": "2024-04-15T10:30:00Z"
+    },
+    {
+      "_id": "tf_2",
+      "employeeId": "emp_2",
+      "skillGap": "Leadership Development",
+      "urgency": "medium",
+      "status": "in-progress",
+      "targetDate": "2024-07-31",
+      "createdAt": "2024-04-10T10:30:00Z"
+    },
+    {
+      "_id": "tf_3",
+      "employeeId": "emp_3",
+      "skillGap": "Digital Transformation",
+      "urgency": "high",
+      "status": "pending",
+      "targetDate": "2024-06-15",
+      "createdAt": "2024-04-12T10:30:00Z"
+    }
+  ],
+  "assessments": [
+    {
+      "_id": "assess_1",
+      "employeeId": "emp_1",
+      "type": "Competency",
+      "status": "completed",
+      "results": {
+        "technical": 78,
+        "leadership": 65,
+        "communication": 72,
+        "problemSolving": 81
+      },
+      "assessor": "manager1@munger.com",
+      "date": "2024-04-13T10:30:00Z"
+    },
+    {
+      "_id": "assess_2",
+      "employeeId": "emp_2",
+      "type": "Promotion Readiness",
+      "status": "completed",
+      "results": {
+        "score": 85,
+        "recommendation": "Ready for promotion"
+      },
+      "assessor": "hr@munger.com",
+      "date": "2024-04-12T10:30:00Z"
+    }
+  ],
+  "departments": [
+    {
+      "_id": "dept_1",
+      "name": "Manufacturing",
+      "manager": "manager1@munger.com",
+      "employees": ["emp_1"],
+      "description": "Core manufacturing operations"
+    },
+    {
+      "_id": "dept_2",
+      "name": "Quality Assurance",
+      "manager": "manager2@munger.com",
+      "employees": ["emp_2"],
+      "description": "Quality control and assurance"
+    },
+    {
+      "_id": "dept_3",
+      "name": "Logistics",
+      "manager": "manager1@munger.com",
+      "employees": ["emp_3"],
+      "description": "Warehousing and logistics"
+    },
+    {
+      "_id": "dept_4",
+      "name": "HR",
+      "manager": "hr@munger.com",
+      "employees": ["emp_4"],
+      "description": "Human Resources"
+    },
+    {
+      "_id": "dept_5",
+      "name": "Operations",
+      "manager": "hr@munger.com",
+      "employees": ["emp_5"],
+      "description": "Overall operations management"
+    }
+  ]
+}

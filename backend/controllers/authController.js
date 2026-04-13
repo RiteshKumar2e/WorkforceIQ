@@ -1,9 +1,22 @@
 import User from '../models/User.js'
 import { successResponse, errorResponse } from '../utils/responseHandler.js'
 import { generateToken } from '../config/jwt.js'
+import * as demoService from '../services/demoService.js'
+
+const isDemoMode = () => process.env.USE_DEMO_MODE === 'true'
+
+const DEMO_CREDENTIALS = {
+  'manager1@munger.com': 'password123',
+  'manager2@munger.com': 'password123',
+  'hr@munger.com': 'password123',
+}
 
 export const register = async (req, res, next) => {
   try {
+    if (isDemoMode()) {
+      return errorResponse(res, 'Cannot register in demo mode', 400)
+    }
+
     const { name, email, password, role, employeeId } = req.body
     
     const existingUser = await User.findOne({ email })
@@ -36,6 +49,25 @@ export const login = async (req, res, next) => {
 
     if (!email || !password) {
       return errorResponse(res, 'Email and password are required', 400)
+    }
+
+    if (isDemoMode()) {
+      // Demo mode login
+      if (DEMO_CREDENTIALS[email] && DEMO_CREDENTIALS[email] === password) {
+        const demoUser = demoService.getDemoUser(email)
+        if (demoUser) {
+          const token = generateToken(demoUser._id, demoUser.role)
+          return successResponse(res, {
+            token,
+            user: {
+              id: demoUser._id,
+              email: demoUser.email,
+              role: demoUser.role,
+            },
+          })
+        }
+      }
+      return errorResponse(res, 'Invalid credentials', 401)
     }
 
     const user = await User.findOne({ email }).select('+password')
