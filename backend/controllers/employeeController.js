@@ -122,8 +122,10 @@ export const searchEmployees = async (req, res, next) => {
           { email: { $regex: q, $options: 'i' } },
           { employeeId: { $regex: q, $options: 'i' } },
           { department: { $regex: q, $options: 'i' } },
-      ],
-    })
+        ],
+      })
+    }
+
     successResponse(res, employees, 'Search results')
   } catch (error) {
     next(error)
