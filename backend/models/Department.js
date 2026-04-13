@@ -1,24 +1,30 @@
-import mongoose from 'mongoose'
+import tempDB from '../config/tempDB.js'
 
-const departmentSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    code: String,
-    description: String,
-    manager: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-    },
-    employees: [{
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Employee',
-    }],
-  },
-  { timestamps: true }
-)
+class Department {
+  static async create(deptData) {
+    if (!deptData.name) {
+      throw new Error('Department name is required')
+    }
+    return await tempDB.createDepartment(deptData)
+  }
 
-export default mongoose.model('Department', departmentSchema)
+  static async find(query = {}) {
+    return await tempDB.getAllDepartments()
+  }
+
+  static async findById(id) {
+    const depts = await tempDB.getAllDepartments()
+    return depts.find((d) => d._id === id)
+  }
+
+  static async findOne(query) {
+    const depts = await tempDB.getAllDepartments()
+    for (const [key, value] of Object.entries(query)) {
+      const result = depts.find((d) => d[key] === value)
+      if (result) return result
+    }
+    return null
+  }
+}
+
+export default Department

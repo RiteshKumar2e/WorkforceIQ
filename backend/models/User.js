@@ -1,57 +1,54 @@
-import mongoose from 'mongoose'
 import bcrypt from 'bcryptjs'
+import tempDB from '../config/tempDB.js'
 
-const userSchema = new mongoose.Schema(
-  {
-    name: {
-      type: String,
-      required: [true, 'Please provide a name'],
-      trim: true,
-    },
-    email: {
-      type: String,
-      required: [true, 'Please provide an email'],
-      unique: true,
-      lowercase: true,
-      match: [/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/, 'Please provide a valid email'],
-    },
-    password: {
-      type: String,
-      required: [true, 'Please provide a password'],
-      minlength: 6,
-      select: false,
-    },
-    role: {
-      type: String,
-      enum: ['shift_manager', 'line_manager', 'hr_admin'],
-      default: 'shift_manager',
-    },
-    employeeId: String,
-    department: String,
-    status: {
-      type: String,
-      enum: ['active', 'inactive'],
-      default: 'active',
-    },
-  },
-  { timestamps: true }
-)
-
-// Hash password before saving
-userSchema.pre('save', async function (next) {
-  if (!this.isModified('password')) return next()
-  try {
-    const salt = await bcrypt.genSalt(10)
-    this.password = await bcrypt.hash(this.password, salt)
-    next()
-  } catch (error) {
-    next(error)
+// User model wrapper for temporary database
+class User {
+  static async create(userData) {
+    if (!userData.email || !userData.password) {
+      throw new Error('Email and password are required')
+    }
+    return await tempDB.createUser(userData)
   }
-})
 
-// Compare password method
-userSchema.methods.comparePassword = async function (enteredPassword) {
-  return await bcrypt.compare(enteredPassword, this.password)
+  static async findById(id) {
+    const user = await tempDB.findUserById(id)
+    if (user) {
+      const { password, ...userWithoutPassword } = user
+      return userWithoutPassword
+    }
+    return null
+  }
+
+  static async findByEmail(email) {
+    return await tempDB.findUserByEmail(email)
+  }
+
+  static async find(query = {}) {
+    const users = await tempDB.getAllUsers()
+    return users
+  }
+
+  static async findByIdAndUpdate(id, data) {
+    const user = await tempDB.findUserById(id)
+    if (!user) return null
+    const updatedUser = { ...user, ...data }
+    tempDB.db.users[tempDB.db.users.indexOf(user)] = updatedUser
+    return { ...updatedUser, password: undefined }
+  }
+
+  static async findOne(query) {
+    const users = tempDB.db.users
+    for (const [key, value] of Object.entries(query)) {
+      const result = users.find((u) => u[key] === value)
+      if (result) return result
+    }
+    return null
+  }
+
+  // Instance method wrapper for password comparison
+  static comparePassword = async (enteredPassword, hashedPassword) => {
+    return await bcrypt.compare(enteredPassword, hashedPassword)
+  }
 }
 
-export default mongoose.model('User', userSchema)
+export default User

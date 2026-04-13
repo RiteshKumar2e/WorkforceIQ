@@ -1,25 +1,33 @@
-import mongoose from 'mongoose'
+import tempDB from '../config/tempDB.js'
 
-const notificationSchema = new mongoose.Schema(
-  {
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: true,
-    },
-    title: String,
-    message: String,
-    type: {
-      type: String,
-      enum: ['alert', 'info', 'success', 'warning'],
-      default: 'info',
-    },
-    read: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  { timestamps: true }
-)
+class Notification {
+  static async create(notifData) {
+    if (!notifData.userId) {
+      throw new Error('User ID is required')
+    }
+    return await tempDB.createNotification(notifData)
+  }
 
-export default mongoose.model('Notification', notificationSchema)
+  static async find(query = {}) {
+    if (query.userId) {
+      return await tempDB.getUserNotifications(query.userId)
+    }
+    return []
+  }
+
+  static async findById(id) {
+    const notifs = await tempDB.getAllTrainingFlags()
+    return notifs.find((n) => n._id === id)
+  }
+
+  static async findOne(query) {
+    const notifs = await tempDB.db.notifications
+    for (const [key, value] of Object.entries(query)) {
+      const result = notifs.find((n) => n[key] === value)
+      if (result) return result
+    }
+    return null
+  }
+}
+
+export default Notification
