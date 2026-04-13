@@ -1,3 +1,15 @@
+@import url('./styles/variables.css');
+@import url('./styles/global.css');
+@import url('./styles/theme.css');
+@import url('./styles/layout.css');
+@import url('./styles/forms.css');
+@import url('./styles/tables.css');
+@import url('./styles/cards.css');
+@import url('./styles/buttons.css');
+@import url('./styles/charts.css');
+@import url('./styles/utilities.css');
+@import url('./styles/responsive.css');
+
 /* Global Reset and Base Styles */
 * {
   margin: 0;
@@ -49,15 +61,3 @@ code {
   background: rgba(79, 70, 229, 0.15);
   color: #4f46e5;
 }
-
-@import url('./styles/variables.css');
-@import url('./styles/global.css');
-@import url('./styles/theme.css');
-@import url('./styles/layout.css');
-@import url('./styles/forms.css');
-@import url('./styles/tables.css');
-@import url('./styles/cards.css');
-@import url('./styles/buttons.css');
-@import url('./styles/charts.css');
-@import url('./styles/utilities.css');
-@import url('./styles/responsive.css');
