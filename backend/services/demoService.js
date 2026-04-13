@@ -1,91 +1,70 @@
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const demoDataPath = path.join(__dirname, 'demoData.json');
-
-let demoData = null;
-
-const loadDemoData = () => {
-  if (!demoData) {
-    const rawData = fs.readFileSync(demoDataPath, 'utf8');
-    demoData = JSON.parse(rawData);
-  }
-  return demoData;
-};
+import tempDB from '../config/tempDB.js'
 
 export const getDemoUser = (email) => {
-  const data = loadDemoData();
-  return data.users.find(u => u.email === email) || null;
-};
+  return tempDB.db.users.find((u) => u.email === email.toLowerCase()) || null
+}
 
 export const getDemoUsers = () => {
-  const data = loadDemoData();
-  return data.users || [];
-};
+  return tempDB.db.users || []
+}
 
 export const getDemoEmployees = (filter = {}) => {
-  const data = loadDemoData();
-  let employees = data.employees || [];
+  let employees = tempDB.db.employees || []
   
   if (filter.department) {
-    employees = employees.filter(e => e.department === filter.department);
+    employees = employees.filter((e) => e.department === filter.department)
   }
   if (filter.position) {
-    employees = employees.filter(e => e.position === filter.position);
+    employees = employees.filter((e) => e.position === filter.position)
   }
   
-  return employees;
-};
+  return employees
+}
 
 export const getDemoEmployee = (id) => {
-  const data = loadDemoData();
-  return data.employees.find(e => e._id === id || e.employeeId === id) || null;
-};
+  return tempDB.db.employees.find((e) => e._id === id || e.employeeId === id) || null
+}
 
 export const getDemoAssessments = (filter = {}) => {
-  const data = loadDemoData();
-  let assessments = data.assessments || [];
+  let assessments = tempDB.db.assessments || []
   
   if (filter.employeeId) {
-    assessments = assessments.filter(a => a.employeeId === filter.employeeId);
+    assessments = assessments.filter((a) => a.employeeId === filter.employeeId)
   }
   
-  return assessments;
-};
+  return assessments
+}
 
 export const getDemoTrainingFlags = (filter = {}) => {
-  const data = loadDemoData();
-  let flags = data.trainingFlags || [];
+  let flags = tempDB.db.trainingFlags || []
   
   if (filter.employeeId) {
-    flags = flags.filter(f => f.employeeId === filter.employeeId);
+    flags = flags.filter((f) => f.employeeId === filter.employeeId)
   }
   if (filter.status) {
-    flags = flags.filter(f => f.status === filter.status);
+    flags = flags.filter((f) => f.status === filter.status)
   }
   
-  return flags;
-};
+  return flags
+}
 
 export const getDemoDepartments = () => {
-  const data = loadDemoData();
-  return data.departments || [];
-};
+  return tempDB.db.departments || []
+}
 
 export const getDemoDashboardStats = () => {
-  const data = loadDemoData();
-  const employees = data.employees || [];
+  const employees = tempDB.db.employees || []
   
   return {
     totalEmployees: employees.length,
-    averageEngagement: (employees.reduce((sum, e) => sum + e.engagementScore, 0) / employees.length).toFixed(1),
-    promotionReady: employees.filter(e => e.promotionReadiness > 80).length,
-    skillGaps: data.trainingFlags.length,
-    departments: data.departments.length
-  };
-};
+    averageEngagement: employees.length > 0
+      ? (employees.reduce((sum, e) => sum + (e.engagementScore || 0), 0) / employees.length).toFixed(1)
+      : 0,
+    promotionReady: employees.filter((e) => e.promotionReadiness === 'ready_now').length,
+    skillGaps: tempDB.db.trainingFlags.length,
+    departments: tempDB.db.departments.length,
+  }
+}
 
 export default {
   getDemoUser,
@@ -96,5 +75,4 @@ export default {
   getDemoTrainingFlags,
   getDemoDepartments,
   getDemoDashboardStats,
-  loadDemoData
-};
+}

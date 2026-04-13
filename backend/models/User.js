@@ -20,6 +20,7 @@ class User {
   }
 
   static async findByEmail(email) {
+    // Returns user WITH password for login comparison
     return await tempDB.findUserByEmail(email)
   }
 

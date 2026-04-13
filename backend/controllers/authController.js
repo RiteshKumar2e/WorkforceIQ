@@ -24,8 +24,7 @@ export const register = async (req, res, next) => {
       return errorResponse(res, 'Email already registered', 400)
     }
 
-    const user = new User({ name, email, password, role, employeeId })
-    await user.save()
+    const user = await User.create({ name, email, password, role, employeeId })
 
     const token = generateToken(user._id, user.role)
     
@@ -70,12 +69,12 @@ export const login = async (req, res, next) => {
       return errorResponse(res, 'Invalid credentials', 401)
     }
 
-    const user = await User.findOne({ email }).select('+password')
+    const user = await User.findByEmail(email)
     if (!user) {
       return errorResponse(res, 'Invalid credentials', 401)
     }
 
-    const isPasswordValid = await user.comparePassword(password)
+    const isPasswordValid = await User.comparePassword(password, user.password)
     if (!isPasswordValid) {
       return errorResponse(res, 'Invalid credentials', 401)
     }

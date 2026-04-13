@@ -1,0 +1,31 @@
+{
+  "users": [
+    {
+      "_id": "1776094504976",
+      "name": "Manager 1",
+      "email": "manager1@munger.com",
+      "password": "$2a$10$CLmtjKF1EQo5QZfABeZtTOqAd93F8gM.BnQyax6Y4DkKReHz6WwWa",
+      "role": "shift_manager",
+      "employeeId": "M001",
+      "department": "Production",
+      "createdAt": "2026-04-13T15:35:05.332Z",
+      "updatedAt": "2026-04-13T15:35:05.332Z"
+    },
+    {
+      "_id": "1776094505340",
+      "name": "Line Manager",
+      "email": "manager2@munger.com",
+      "password": "$2a$10$rOznWhmHnCPYXl20nA001u/mvcqhnkY4KUvC6DbI6ieDZ2Eaq3wXG",
+      "role": "line_manager",
+      "employeeId": "M002",
+      "department": "Production",
+      "createdAt": "2026-04-13T15:35:05.647Z",
+      "updatedAt": "2026-04-13T15:35:05.647Z"
+    }
+  ],
+  "employees": [],
+  "assessments": [],
+  "trainingFlags": [],
+  "departments": [],
+  "notifications": []
+}

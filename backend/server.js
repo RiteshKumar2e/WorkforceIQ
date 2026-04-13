@@ -1,15 +1,13 @@
 import app from './app.js'
-import seedData from './seed/seedData.js'
+import initializeDB from './config/initDB.js'
 
 const PORT = process.env.PORT || 5000
 
 const server = app.listen(PORT, async () => {
   console.log(`🚀 Server is running on port ${PORT}`)
   
-  // Seed database if empty (optional)
-  if (process.argv[2] === '--seed') {
-    await seedData()
-  }
+  // Initialize database with demo data if empty
+  await initializeDB()
 })
 
 // Handle graceful shutdown

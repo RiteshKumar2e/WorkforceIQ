@@ -66,6 +66,7 @@ class TempDB {
   }
 
   async findUserByEmail(email) {
+    // Return with password for login comparison
     return this.db.users.find((u) => u.email === email.toLowerCase())
   }
 
